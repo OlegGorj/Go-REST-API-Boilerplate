@@ -5,11 +5,11 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/album"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/auth"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/config"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/errors"
-	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/healthcheck"
+	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/health"
+	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/project"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/accesslog"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/dbcontext"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/log"
@@ -81,14 +81,14 @@ func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.
 		cors.Handler(cors.AllowAll),
 	)
 
-	healthcheck.RegisterHandlers(router, Version)
+	health.RegisterHandlers(router, Version)
 
 	rg := router.Group("/v1")
 
 	authHandler := auth.Handler(cfg.JWTSigningKey)
 
-	album.RegisterHandlers(rg.Group(""),
-		album.NewService(album.NewRepository(db, logger), logger),
+	project.RegisterHandlers(rg.Group(""),
+		project.NewService(project.NewRepository(db, logger), logger),
 		authHandler, logger,
 	)
 

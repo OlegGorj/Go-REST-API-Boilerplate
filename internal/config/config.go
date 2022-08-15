@@ -2,8 +2,8 @@ package config
 
 import (
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/log"
-	"github.com/OlegGorj/go-env"
 	"github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/qiangxue/go-env"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 )

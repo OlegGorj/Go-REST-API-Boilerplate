@@ -34,11 +34,11 @@ It provides the following endpoints:
 
 * `GET /health`: a health check
 * `POST /v1/login`: authenticates a user and generates a JWT
-* `GET /v1/projects`: returns a paginated list of the albums
-* `GET /v1/projects/:id`: returns the detailed information of an album
-* `POST /v1/projects`: creates a new album
-* `PUT /v1/projects/:id`: updates an existing album
-* `DELETE /v1/projects/:id`: deletes an album
+* `GET /v1/projects`: returns a paginated list of the projects
+* `GET /v1/projects/:id`: returns the detailed information of an project
+* `POST /v1/projects`: creates a new project
+* `PUT /v1/projects/:id`: updates an existing project
+* `DELETE /v1/projects/:id`: deletes an project
 
 
 ## Project Layout
