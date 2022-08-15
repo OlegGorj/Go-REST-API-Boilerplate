@@ -1,7 +1,6 @@
 package health
 
-
-mport routing "github.com/go-ozzo/ozzo-routing/v2"
+import routing "github.com/go-ozzo/ozzo-routing/v2"
 
 // RegisterHandlers registers the handlers that perform health checks.
 func RegisterHandlers(r *routing.Router, version string) {

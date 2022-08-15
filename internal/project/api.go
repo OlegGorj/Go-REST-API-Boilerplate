@@ -12,7 +12,7 @@ import (
 func RegisterHandlers(r *routing.RouteGroup, service Service, authHandler routing.Handler, logger log.Logger) {
 	res := resource{
 		service,
-		logger
+		logger,
 	}
 
 	r.Get("/projects/<id>", res.get)
