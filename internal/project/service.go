@@ -59,11 +59,11 @@ func NewService(repo Repository, logger log.Logger) Service {
 
 // Get returns the Project with the specified the Project ID.
 func (s service) Get(ctx context.Context, id string) (Project, error) {
-	Project, err := s.repo.Get(ctx, id)
+	_project, err := s.repo.Get(ctx, id)
 	if err != nil {
 		return Project{}, err
 	}
-	return Project{Project}, nil
+	return Project{_project}, nil
 }
 
 // Create creates a new Project.
@@ -91,29 +91,29 @@ func (s service) Update(ctx context.Context, id string, req UpdateProjectRequest
 		return Project{}, err
 	}
 
-	Project, err := s.Get(ctx, id)
+	_project, err := s.Get(ctx, id)
 	if err != nil {
-		return Project, err
+		return _project, err
 	}
-	Project.Name = req.Name
-	Project.UpdatedAt = time.Now()
+	_project.Name = req.Name
+	_project.UpdatedAt = time.Now()
 
-	if err := s.repo.Update(ctx, Project.Project); err != nil {
-		return Project, err
+	if err := s.repo.Update(ctx, _project.Project); err != nil {
+		return _project, err
 	}
-	return Project, nil
+	return _project, nil
 }
 
 // Delete deletes the Project with the specified ID.
 func (s service) Delete(ctx context.Context, id string) (Project, error) {
-	Project, err := s.Get(ctx, id)
+	_project, err := s.Get(ctx, id)
 	if err != nil {
 		return Project{}, err
 	}
 	if err = s.repo.Delete(ctx, id); err != nil {
 		return Project{}, err
 	}
-	return Project, nil
+	return _project, nil
 }
 
 // Count returns the number of Projects.

@@ -32,12 +32,12 @@ type resource struct {
 }
 
 func (r resource) get(c *routing.Context) error {
-	album, err := r.service.Get(c.Request.Context(), c.Param("id"))
+	Project, err := r.service.Get(c.Request.Context(), c.Param("id"))
 	if err != nil {
 		return err
 	}
 
-	return c.Write(album)
+	return c.Write(Project)
 }
 
 func (r resource) query(c *routing.Context) error {
@@ -56,39 +56,39 @@ func (r resource) query(c *routing.Context) error {
 }
 
 func (r resource) create(c *routing.Context) error {
-	var input CreateAlbumRequest
+	var input CreateProjectRequest
 	if err := c.Read(&input); err != nil {
 		r.logger.With(c.Request.Context()).Info(err)
 		return errors.BadRequest("")
 	}
-	album, err := r.service.Create(c.Request.Context(), input)
+	Project, err := r.service.Create(c.Request.Context(), input)
 	if err != nil {
 		return err
 	}
 
-	return c.WriteWithStatus(album, http.StatusCreated)
+	return c.WriteWithStatus(Project, http.StatusCreated)
 }
 
 func (r resource) update(c *routing.Context) error {
-	var input UpdateAlbumRequest
+	var input UpdateProjectRequest
 	if err := c.Read(&input); err != nil {
 		r.logger.With(c.Request.Context()).Info(err)
 		return errors.BadRequest("")
 	}
 
-	album, err := r.service.Update(c.Request.Context(), c.Param("id"), input)
+	Project, err := r.service.Update(c.Request.Context(), c.Param("id"), input)
 	if err != nil {
 		return err
 	}
 
-	return c.Write(album)
+	return c.Write(Project)
 }
 
 func (r resource) delete(c *routing.Context) error {
-	album, err := r.service.Delete(c.Request.Context(), c.Param("id"))
+	Project, err := r.service.Delete(c.Request.Context(), c.Param("id"))
 	if err != nil {
 		return err
 	}
 
-	return c.Write(album)
+	return c.Write(Project)
 }

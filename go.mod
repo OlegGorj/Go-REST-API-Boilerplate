@@ -10,7 +10,6 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/lib/pq v1.2.0
 	github.com/qiangxue/go-env v1.0.0
-	github.com/qiangxue/go-rest-api v1.0.1
 	go.uber.org/zap v1.13.0
 	gopkg.in/yaml.v2 v2.2.2
 )
