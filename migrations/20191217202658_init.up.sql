@@ -1,6 +1,5 @@
 
-
-CREATE TABLE album
+CREATE TABLE project
 (
     id         VARCHAR PRIMARY KEY,
     name       VARCHAR NOT NULL,

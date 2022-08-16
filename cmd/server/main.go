@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"context"
@@ -22,6 +22,8 @@ import (
 	"os"
 	"time"
 )
+
+// TODO: move to Global package to access across multiple packages
 
 // Version indicates the current version of the application.
 var Version = "1.0.1"
