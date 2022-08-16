@@ -1,6 +1,7 @@
 package project
 
 import (
+	"fmt"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/errors"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/log"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/pagination"
@@ -32,12 +33,12 @@ type resource struct {
 }
 
 func (r resource) get(c *routing.Context) error {
-	Project, err := r.service.Get(c.Request.Context(), c.Param("id"))
+	_project, err := r.service.Get(c.Request.Context(), c.Param("id"))
 	if err != nil {
 		return err
 	}
 
-	return c.Write(Project)
+	return c.Write(_project)
 }
 
 func (r resource) query(c *routing.Context) error {
@@ -47,11 +48,12 @@ func (r resource) query(c *routing.Context) error {
 		return err
 	}
 	pages := pagination.NewFromRequest(c.Request, count)
-	projects, err := r.service.Query(ctx, pages.Offset(), pages.Limit())
+	_projects, err := r.service.Query(ctx, pages.Offset(), pages.Limit())
 	if err != nil {
 		return err
 	}
-	pages.Items = projects
+	fmt.Printf("DEBUG: _projects: %+v \n", _projects)
+	pages.Items = _projects
 	return c.Write(pages)
 }
 
@@ -61,12 +63,12 @@ func (r resource) create(c *routing.Context) error {
 		r.logger.With(c.Request.Context()).Info(err)
 		return errors.BadRequest("")
 	}
-	Project, err := r.service.Create(c.Request.Context(), input)
+	_project, err := r.service.Create(c.Request.Context(), input)
 	if err != nil {
 		return err
 	}
 
-	return c.WriteWithStatus(Project, http.StatusCreated)
+	return c.WriteWithStatus(_project, http.StatusCreated)
 }
 
 func (r resource) update(c *routing.Context) error {

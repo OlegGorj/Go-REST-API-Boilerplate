@@ -36,9 +36,9 @@ func NewRepository(db *dbcontext.DB, logger log.Logger) Repository {
 
 // Get reads the Project with the specified ID from the database.
 func (r repository) Get(ctx context.Context, id string) (entity.Project, error) {
-	var Project entity.Project
-	err := r.db.With(ctx).Select().Model(id, &Project)
-	return Project, err
+	var _project entity.Project
+	err := r.db.With(ctx).Select().Model(id, &_project)
+	return _project, err
 }
 
 // Create saves a new Project record in the database.
@@ -54,28 +54,28 @@ func (r repository) Update(ctx context.Context, Project entity.Project) error {
 
 // Delete deletes an Project with the specified ID from the database.
 func (r repository) Delete(ctx context.Context, id string) error {
-	Project, err := r.Get(ctx, id)
+	_project, err := r.Get(ctx, id)
 	if err != nil {
 		return err
 	}
-	return r.db.With(ctx).Model(&Project).Delete()
+	return r.db.With(ctx).Model(&_project).Delete()
 }
 
 // Count returns the number of the Project records in the database.
 func (r repository) Count(ctx context.Context) (int, error) {
 	var count int
-	err := r.db.With(ctx).Select("COUNT(*)").From("Project").Row(&count)
+	err := r.db.With(ctx).Select("COUNT(*)").From("project").Row(&count)
 	return count, err
 }
 
 // Query retrieves the Project records with the specified offset and limit from the database.
 func (r repository) Query(ctx context.Context, offset, limit int) ([]entity.Project, error) {
-	var projects []entity.Project
+	var _projects []entity.Project
 	err := r.db.With(ctx).
 		Select().
 		OrderBy("id").
 		Offset(int64(offset)).
 		Limit(int64(limit)).
-		All(&projects)
-	return projects, err
+		All(&_projects)
+	return _projects, err
 }

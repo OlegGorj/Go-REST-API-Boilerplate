@@ -1,8 +1,6 @@
 package health
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/log"
 	routing "github.com/go-ozzo/ozzo-routing/v2"
 )
@@ -36,12 +34,6 @@ func healthChecks() *Health {
 // health responds to a health request.
 func health(version string) routing.Handler {
 	return func(c *routing.Context) error {
-		marshalled, err := json.Marshal(healthChecks())
-		if err != nil {
-			fmt.Println(err)
-			return nil
-		}
-		fmt.Printf("marshalled: %s \n", string(marshalled))
-		return c.WriteWithStatus(string(marshalled), 200)
+		return c.Write(healthChecks())
 	}
 }
