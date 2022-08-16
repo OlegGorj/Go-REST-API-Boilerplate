@@ -24,7 +24,7 @@ import (
 )
 
 // Version indicates the current version of the application.
-var Version = "1.0.0"
+var Version = "1.0.1"
 
 var flagConfig = flag.String("config", "./config/local.yml", "path to the config file")
 
@@ -73,7 +73,6 @@ func main() {
 // buildHandler sets up the HTTP routing and builds an HTTP handler.
 func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
 	router := routing.New()
-
 	router.Use(
 		accesslog.Handler(logger),
 		errors.Handler(logger),

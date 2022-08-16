@@ -18,12 +18,12 @@ type Service interface {
 	Delete(ctx context.Context, id string) (Project, error)
 }
 
-// Project represents the data about an Project.
+// Project represents the data about a Project.
 type Project struct {
 	entity.Project
 }
 
-// CreateProjectRequest represents an Project creation request.
+// CreateProjectRequest represents a Project creation request.
 type CreateProjectRequest struct {
 	Name string `json:"name"`
 }
@@ -35,7 +35,7 @@ func (m CreateProjectRequest) Validate() error {
 	)
 }
 
-// UpdateProjectRequest represents an Project update request.
+// UpdateProjectRequest represents a Project update request.
 type UpdateProjectRequest struct {
 	Name string `json:"name"`
 }
@@ -54,7 +54,10 @@ type service struct {
 
 // NewService creates a new Project service.
 func NewService(repo Repository, logger log.Logger) Service {
-	return service{repo, logger}
+	return service{
+		repo,
+		logger,
+	}
 }
 
 // Get returns the Project with the specified the Project ID.
