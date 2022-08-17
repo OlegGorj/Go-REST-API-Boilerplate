@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"database/sql"
-	"flag"
 	"fmt"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/auth"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/config"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/errors"
+	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/global"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/health"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/internal/project"
 	"github.com/OlegGorj/Go-REST-API-Boilerplate/pkg/accesslog"
@@ -23,51 +23,34 @@ import (
 	"time"
 )
 
-// TODO: move to Global package to access across multiple packages
-
-// Version indicates the current version of the application.
-var Version = "1.0.1"
-
-var flagConfig = flag.String("config", "./config/local.yml", "path to the config file")
-
 func main() {
-	flag.Parse()
-	// create root logger tagged with server version
-	logger := log.New().With(nil, "version", Version)
-
-	// load application configurations
-	cfg, err := config.Load(*flagConfig, logger)
-	if err != nil {
-		logger.Errorf("failed to load application configuration: %s", err)
-		os.Exit(-1)
-	}
 
 	// connect to the database
-	db, err := dbx.MustOpen("postgres", cfg.DSN)
+	db, err := dbx.MustOpen("postgres", global.AppConfig.DSN)
 	if err != nil {
-		logger.Error(err)
+		global.Logger.Error(err)
 		os.Exit(-1)
 	}
-	db.QueryLogFunc = logDBQuery(logger)
-	db.ExecLogFunc = logDBExec(logger)
+	db.QueryLogFunc = logDBQuery(global.Logger)
+	db.ExecLogFunc = logDBExec(global.Logger)
 	defer func() {
 		if err := db.Close(); err != nil {
-			logger.Error(err)
+			global.Logger.Error(err)
 		}
 	}()
 
 	// build HTTP server
-	address := fmt.Sprintf(":%v", cfg.ServerPort)
+	address := fmt.Sprintf(":%v", global.AppConfig.ServerPort)
 	hs := &http.Server{
 		Addr:    address,
-		Handler: buildHandler(logger, dbcontext.New(db), cfg),
+		Handler: buildHandler(global.Logger, dbcontext.New(db), global.AppConfig),
 	}
 
 	// start the HTTP server with graceful shutdown
-	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
-	logger.Infof("server %v is running at %v", Version, address)
+	go routing.GracefulShutdown(hs, 10*time.Second, global.Logger.Infof)
+	global.Logger.Infof("server %v is running at %v", global.Version, address)
 	if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		logger.Error(err)
+		global.Logger.Error(err)
 		os.Exit(-1)
 	}
 }
@@ -82,9 +65,9 @@ func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.
 		cors.Handler(cors.AllowAll),
 	)
 
-	health.RegisterHandlers(router, Version)
+	health.RegisterHandlers(router, global.Version)
 
-	rg := router.Group("/v1")
+	rg := router.Group(fmt.Sprintf("/%s", global.APIGroup))
 
 	authHandler := auth.Handler(cfg.JWTSigningKey)
 
