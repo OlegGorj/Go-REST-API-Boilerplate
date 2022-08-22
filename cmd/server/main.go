@@ -28,9 +28,7 @@ func init() {
 }
 
 func main() {
-
 	// connect to the database
-	//db, err := dbx.MustOpen("postgres", global.AppConfig.DSN)
 	db, err := global.ConnectDB()
 	if err != nil {
 		global.Logger.Error(err)
