@@ -23,10 +23,6 @@ import (
 	"time"
 )
 
-func init() {
-	fmt.Printf("DEBUG: main/init\n")
-}
-
 func main() {
 	// connect to the database
 	db, err := global.ConnectDB()
