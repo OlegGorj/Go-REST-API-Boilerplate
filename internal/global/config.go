@@ -9,7 +9,7 @@ import (
 )
 
 // Version indicates the current version of the application.
-var Version = "1.0.1"
+var Version = "1.0.2"
 var FlagConfig = flag.String("config", "./config/local.yml", "path to the config file")
 var Logger log.Logger
 var AppConfig *config.Config
