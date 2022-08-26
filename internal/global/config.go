@@ -15,8 +15,6 @@ var Logger log.Logger
 var AppConfig *config.Config
 var APIGroup = "v1"
 
-// var DBConnection *dbx.DB = nil
-
 func init() {
 	flag.Parse()
 	// create root logger tagged with server version
@@ -24,7 +22,6 @@ func init() {
 
 	// load application configurations
 	AppConfig, _ = config.Load(*FlagConfig, Logger)
-
 }
 
 func ConnectDB() (*dbx.DB, error) {
